@@ -246,22 +246,6 @@ public class RegexController {
         ));
     }
 
-    /**
-     * Cache management endpoints.
-     */
-    @GetMapping("/cache/stats")
-    @Operation(summary = "Get cache statistics")
-    public ResponseEntity<Map<String, Object>> getCacheStats() {
-        return ResponseEntity.ok(Map.of("cacheSize", regexService.getCacheSize()));
-    }
-
-    @DeleteMapping("/cache")
-    @Operation(summary = "Clear cache")
-    public ResponseEntity<Void> clearCache() {
-        regexService.clearCache();
-        return ResponseEntity.noContent().build();
-    }
-
     // ===== Helper Methods =====
 
     private RegexService.MatchEngine parseEngine(String engine) {

@@ -122,20 +122,4 @@ public class MonitoringController {
         regexService.clearCache();
         return ResponseEntity.ok(Map.of("message", "Cache cleared successfully"));
     }
-
-    /**
-     * Runs a performance benchmark.
-     */
-    @PostMapping("/benchmark")
-    @Operation(summary = "Run benchmark", description = "Benchmarks all three engines on a pattern")
-    public ResponseEntity<Map<String, Object>> benchmark(
-            @RequestBody RegexRequest.MatchRequest request) {
-
-        Map<String, Object> results = regexService.benchmark(
-                request.getPattern(),
-                request.getInput()
-        );
-
-        return ResponseEntity.ok(results);
-    }
 }
