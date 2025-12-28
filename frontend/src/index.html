@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0"/>
+    <title>Regex Engine | Interactive Regex Testing</title>
+    <meta name="description"
+          content="A powerful regex engine with Backtracking, NFA, and DFA implementations. Test, benchmark, and visualize your regular expressions.">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml"
+          href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⟨⟩</text></svg>">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <script type="module" src="/build/regex-engine-ui.esm.js"></script>
+    <script nomodule src="/build/regex-engine-ui.js"></script>
+
+    <style>
+        :root {
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #12121a;
+            --bg-tertiary: #1a1a25;
+            --bg-card: #151520;
+            --bg-input: #0d0d14;
+
+            --text-primary: #f0f0f5;
+            --text-secondary: #a0a0b0;
+            --text-muted: #606070;
+
+            --accent-primary: #00ff88;
+            --accent-secondary: #00ccff;
+            --accent-tertiary: #ff6b9d;
+            --accent-warning: #ffcc00;
+            --accent-error: #ff4466;
+
+            --gradient-primary: linear-gradient(135deg, #00ff88 0%, #00ccff 100%);
+            --gradient-secondary: linear-gradient(135deg, #ff6b9d 0%, #ffcc00 100%);
+
+            --border-color: #2a2a35;
+            --shadow-glow: 0 0 30px rgba(0, 255, 136, 0.2);
+
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Space Grotesk', sans-serif;
+
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+
+            --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            font-family: var(--font-sans);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-image: radial-gradient(ellipse at 20% 0%, rgba(0, 255, 136, 0.08) 0%, transparent 50%),
+            radial-gradient(ellipse at 80% 100%, rgba(0, 204, 255, 0.06) 0%, transparent 50%);
+            background-attachment: fixed;
+        }
+
+        /* Loading state before components hydrate */
+        regex-app:not(.hydrated) {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        regex-app:not(.hydrated)::before {
+            content: '⟨⟩';
+            font-size: 4rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.5;
+                transform: scale(0.95);
+            }
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-primary);
+        }
+
+        ::selection {
+            background: rgba(0, 255, 136, 0.3);
+        }
+    </style>
+</head>
+<body class="noise-overlay">
+<regex-app></regex-app>
+</body>
+</html>
