@@ -4,7 +4,7 @@ import replace from "@rollup/plugin-replace";
 const isProd = process.env.NODE_ENV === 'production';
 
 export const config: Config = {
-    namespace: 'regex-engine-ui',
+    namespace: 'regex-engine',
     outputTargets: [
         {
             type: 'dist',
@@ -15,8 +15,10 @@ export const config: Config = {
         },
         {
             type: 'www',
+            dir: 'www',                                    // Output directly to www/
             baseUrl: isProd ? '/regex-engine/' : '/',
             serviceWorker: null,
+            empty: true,                                   // Clean the folder before build
         },
     ],
     rollupPlugins: {
