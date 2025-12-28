@@ -11,7 +11,7 @@
   "scripts": {
     "build": "stencil build",
     "build:prod": "NODE_ENV=production stencil build",
-    "build:prod:win": "cross-env NODE_ENV=production stencil build",
+    "build:prod:windows": "cross-env NODE_ENV=production stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "generate": "stencil generate"
