@@ -17,7 +17,6 @@ export const config: Config = {
             type: 'www',
             baseUrl: isProd ? '/regex-engine/' : '/',
             serviceWorker: null,
-            copy: []
         },
     ],
     rollupPlugins: {
