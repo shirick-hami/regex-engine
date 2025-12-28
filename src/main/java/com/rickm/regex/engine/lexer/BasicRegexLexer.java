@@ -3,6 +3,12 @@ package com.rickm.regex.engine.lexer;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Tokenizer for regular expression patterns.
+ *
+ * Converts a regex pattern string into a sequence of tokens
+ * that can be processed by the parser.
+ */
 public class BasicRegexLexer implements RegexLexer {
     private final String pattern;
     private int position;
