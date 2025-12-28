@@ -6,6 +6,7 @@ import com.rickm.regex.engine.dto.MatchResult;
 import com.rickm.regex.engine.matcher.BacktrackingMatcher;
 import com.rickm.regex.engine.matcher.DFAMatcher;
 import com.rickm.regex.engine.matcher.NFAMatcher;
+import com.rickm.regex.engine.matcher.RegexMatcher;
 import com.rickm.regex.engine.parser.AstNode;
 import com.rickm.regex.engine.parser.BasicRegexParser;
 import com.rickm.regex.engine.parser.RegexParser;
@@ -113,15 +114,15 @@ public class RegexService {
         MatchResult result;
         switch (engine) {
             case NFA:
-                NFAMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
+                RegexMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
                 result = nfaMatcher.matchFull(input);
                 break;
             case DFA:
-                DFAMatcher dfaMatcher = new DFAMatcher(compiled.getAst(), config.getTimeoutMs());
+                RegexMatcher dfaMatcher = new DFAMatcher(compiled.getAst(), config.getTimeoutMs());
                 result = dfaMatcher.matchFull(input);
                 break;
             default:
-                BacktrackingMatcher btMatcher = new BacktrackingMatcher(
+                RegexMatcher btMatcher = new BacktrackingMatcher(
                         compiled.getAst(),
                         config.getMaxBacktrackLimit(),
                         config.getTimeoutMs()
@@ -151,15 +152,15 @@ public class RegexService {
         MatchResult result;
         switch (engine) {
             case NFA:
-                NFAMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
+                RegexMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
                 result = nfaMatcher.find(input);
                 break;
             case DFA:
-                DFAMatcher dfaMatcher = new DFAMatcher(compiled.getAst(), config.getTimeoutMs());
+                RegexMatcher dfaMatcher = new DFAMatcher(compiled.getAst(), config.getTimeoutMs());
                 result = dfaMatcher.find(input);
                 break;
             default:
-                BacktrackingMatcher btMatcher = new BacktrackingMatcher(
+                RegexMatcher btMatcher = new BacktrackingMatcher(
                         compiled.getAst(),
                         config.getMaxBacktrackLimit(),
                         config.getTimeoutMs()
@@ -189,15 +190,15 @@ public class RegexService {
         MatchResult result;
         switch (engine) {
             case NFA:
-                NFAMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
+                RegexMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
                 result = nfaMatcher.findAll(input);
                 break;
             case DFA:
-                DFAMatcher dfaMatcher = new DFAMatcher(compiled.getAst(), config.getTimeoutMs());
+                RegexMatcher dfaMatcher = new DFAMatcher(compiled.getAst(), config.getTimeoutMs());
                 result = dfaMatcher.findAll(input);
                 break;
             default:
-                BacktrackingMatcher btMatcher = new BacktrackingMatcher(
+                RegexMatcher btMatcher = new BacktrackingMatcher(
                         compiled.getAst(),
                         config.getMaxBacktrackLimit(),
                         config.getTimeoutMs()
@@ -292,7 +293,7 @@ public class RegexService {
         // Backtracking
         try {
             long start = System.currentTimeMillis();
-            BacktrackingMatcher btMatcher = new BacktrackingMatcher(
+            RegexMatcher btMatcher = new BacktrackingMatcher(
                     compiled.getAst(), config.getMaxBacktrackLimit(), config.getTimeoutMs());
             MatchResult btResult = btMatcher.matchFull(input);
             results.put("backtracking", Map.of(
@@ -307,7 +308,7 @@ public class RegexService {
         // NFA
         try {
             long start = System.currentTimeMillis();
-            NFAMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
+            RegexMatcher nfaMatcher = new NFAMatcher(compiled.getAst(), config.getTimeoutMs());
             MatchResult nfaResult = nfaMatcher.matchFull(input);
             results.put("nfa", Map.of(
                     "matched", nfaResult.isMatched(),

@@ -29,7 +29,7 @@ import java.util.*;
  * This is linear in the input size for a fixed pattern.
  */
 @Slf4j
-public class NFAMatcher {
+public class NFAMatcher implements RegexMatcher {
 
     private final NFA nfa;
     private final long timeoutMs;
@@ -50,6 +50,7 @@ public class NFAMatcher {
     /**
      * Attempts to match the pattern against the entire input string.
      */
+    @Override
     public MatchResult matchFull(String input) {
         this.startTime = System.currentTimeMillis();
         this.stateTransitions = 0;
@@ -76,6 +77,7 @@ public class NFAMatcher {
     /**
      * Finds the first match in the input string.
      */
+    @Override
     public MatchResult find(String input) {
         this.startTime = System.currentTimeMillis();
         this.stateTransitions = 0;
@@ -114,6 +116,7 @@ public class NFAMatcher {
     /**
      * Finds all non-overlapping matches in the input string.
      */
+    @Override
     public MatchResult findAll(String input) {
         this.startTime = System.currentTimeMillis();
         this.stateTransitions = 0;
