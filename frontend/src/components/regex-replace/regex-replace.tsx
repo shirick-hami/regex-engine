@@ -1,5 +1,11 @@
 import {Component, h, State} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {http} from "../../services/http";
+import {REGEX_REPLACE_API} from "../../utils/constants";
+
+interface ReplaceResult {
+    result: string;
+    replacementCount: number;
+}
 
 @Component({
     tag: 'regex-replace',
@@ -7,13 +13,11 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexReplace {
-    private appConfig = getAppConfig();
-
     @State() pattern: string = '';
     @State() input: string = '';
     @State() replacement: string = '';
     @State() engine: string = 'BACKTRACKING';
-    @State() result: any = null;
+    @State() result: ReplaceResult | null = null;
     @State() loading: boolean = false;
     @State() error: string = '';
 
@@ -28,24 +32,15 @@ export class RegexReplace {
         this.result = null;
 
         try {
-            const baseUrl = this.appConfig.backendBaseUrl;
-            const res = await fetch(`${baseUrl}/api/v1/regex/replace?engine=${this.engine}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({
+            this.result = await http.post<ReplaceResult>(
+                REGEX_REPLACE_API,
+                {
                     pattern: this.pattern,
                     input: this.input,
                     replacement: this.replacement
-                }),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.error = data.message || 'An error occurred';
-            } else {
-                this.result = data;
-            }
+                },
+                {engine: this.engine}
+            );
         } catch (e) {
             if (e instanceof Error) {
                 this.error = e.message;

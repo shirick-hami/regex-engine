@@ -1,5 +1,22 @@
 import {Component, h, State} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {http} from "../../services/http";
+import {REGEX_BENCHMARK_API} from "../../utils/constants";
+
+interface EngineResult {
+    matched?: boolean;
+    timeMs?: number;
+    operations?: number;
+    stateCount?: number;
+    constructionTimeMs?: number;
+    error?: string;
+}
+
+interface BenchmarkResult {
+    compileTimeMs: number;
+    backtracking?: EngineResult;
+    nfa?: EngineResult;
+    dfa?: EngineResult;
+}
 
 @Component({
     tag: 'regex-benchmark',
@@ -7,11 +24,9 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexBenchmark {
-    private appConfig = getAppConfig();
-
     @State() pattern: string = '';
     @State() input: string = '';
-    @State() result: any = null;
+    @State() result: BenchmarkResult | null = null;
     @State() loading: boolean = false;
     @State() error: string = '';
 
@@ -36,19 +51,10 @@ export class RegexBenchmark {
         this.result = null;
 
         try {
-            const res = await fetch(this.appConfig.backendBaseUrl + '/api/v1/regex/benchmark', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({pattern: this.pattern, input: this.input}),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.error = data.message || 'An error occurred';
-            } else {
-                this.result = data;
-            }
+            this.result = await http.post<BenchmarkResult>(
+                REGEX_BENCHMARK_API,
+                {pattern: this.pattern, input: this.input}
+            );
         } catch (e) {
             if (e instanceof Error) {
                 this.error = e.message;
@@ -60,13 +66,13 @@ export class RegexBenchmark {
         }
     }
 
-    applyPreset(preset: any) {
+    applyPreset(preset: { name: string; pattern: string; input: string }) {
         this.pattern = preset.pattern;
         this.input = preset.input;
     }
 
-    getBarWidth(timeMs: number) {
-        if (!this.result) return 0;
+    getBarWidth(timeMs: number | undefined) {
+        if (!this.result || !timeMs) return 0;
         const times = [
             this.result.backtracking?.timeMs || 0,
             this.result.nfa?.timeMs || 0,
@@ -172,10 +178,10 @@ export class RegexBenchmark {
                                             <span class="stat-label">Result</span>
                                             <span class={{
                                                 'stat-value': true,
-                                                'matched': this.result.backtracking?.matched
+                                                'matched': !!this.result.backtracking?.matched
                                             }}>
-                        {this.result.backtracking?.matched ? '✓ Matched' : '✗ No Match'}
-                      </span>
+                                                {!!this.result.backtracking?.matched ? '✓ Matched' : '✗ No Match'}
+                                            </span>
                                         </div>
                                         <div class="stat-row">
                                             <span class="stat-label">Time</span>
@@ -183,8 +189,7 @@ export class RegexBenchmark {
                                         </div>
                                         <div class="stat-row">
                                             <span class="stat-label">Operations</span>
-                                            <span
-                                                class="stat-value">{this.result.backtracking?.operations?.toLocaleString()}</span>
+                                            <span class="stat-value">{(this.result.backtracking?.operations ?? 0).toLocaleString()}</span>
                                         </div>
                                         <div class="time-bar">
                                             <div class="time-bar-fill backtracking"
@@ -206,9 +211,9 @@ export class RegexBenchmark {
                                     <div class="engine-stats">
                                         <div class="stat-row">
                                             <span class="stat-label">Result</span>
-                                            <span class={{'stat-value': true, 'matched': this.result.nfa?.matched}}>
-                        {this.result.nfa?.matched ? '✓ Matched' : '✗ No Match'}
-                      </span>
+                                            <span class={{'stat-value': true, 'matched': !!this.result.nfa?.matched}}>
+                                                {!!this.result.nfa?.matched ? '✓ Matched' : '✗ No Match'}
+                                            </span>
                                         </div>
                                         <div class="stat-row">
                                             <span class="stat-label">Time</span>
@@ -216,8 +221,7 @@ export class RegexBenchmark {
                                         </div>
                                         <div class="stat-row">
                                             <span class="stat-label">State Transitions</span>
-                                            <span
-                                                class="stat-value">{this.result.nfa?.operations?.toLocaleString()}</span>
+                                            <span class="stat-value">{(this.result.nfa?.operations ?? 0).toLocaleString()}</span>
                                         </div>
                                         <div class="time-bar">
                                             <div class="time-bar-fill nfa"
@@ -239,9 +243,9 @@ export class RegexBenchmark {
                                     <div class="engine-stats">
                                         <div class="stat-row">
                                             <span class="stat-label">Result</span>
-                                            <span class={{'stat-value': true, 'matched': this.result.dfa?.matched}}>
-                        {this.result.dfa?.matched ? '✓ Matched' : '✗ No Match'}
-                      </span>
+                                            <span class={{'stat-value': true, 'matched': !!this.result.dfa?.matched}}>
+                                                {!!this.result.dfa?.matched ? '✓ Matched' : '✗ No Match'}
+                                            </span>
                                         </div>
                                         <div class="stat-row">
                                             <span class="stat-label">Time</span>

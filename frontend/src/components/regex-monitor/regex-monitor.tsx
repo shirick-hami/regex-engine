@@ -1,5 +1,48 @@
 import {Component, h, State} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {http} from "../../services/http";
+import {
+    MONITOR_STATUS_API,
+    MONITOR_METRICS_API,
+    MONITOR_METRICS_RESET_API,
+    MONITOR_CACHE_API
+} from "../../utils/constants";
+
+interface StatusResponse {
+    status: string;
+    healthCheckTimeMs: number;
+    totalRequests: number;
+}
+
+interface EngineMetrics {
+    totalMatches: number;
+    successfulMatches: number;
+    failedMatches: number;
+    successRate: number;
+    averageMatchTimeMs: number;
+    compilations: number;
+    cacheSize: number;
+    cacheMaxSize: number;
+}
+
+interface JvmMetrics {
+    uptimeMs: number;
+    heapUsed: number;
+    heapMax: number;
+    availableProcessors: number;
+}
+
+interface SystemMetrics {
+    javaVersion: string;
+    javaVendor: string;
+    osName: string;
+    osArch: string;
+}
+
+interface MetricsResponse {
+    engine: EngineMetrics;
+    jvm: JvmMetrics;
+    system: SystemMetrics;
+}
 
 @Component({
     tag: 'regex-monitor',
@@ -7,10 +50,8 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexMonitor {
-    private appConfig = getAppConfig();
-
-    @State() status: any = null;
-    @State() metrics: any = null;
+    @State() status: StatusResponse | null = null;
+    @State() metrics: MetricsResponse | null = null;
     @State() loading: boolean = true;
     @State() autoRefresh: boolean = true;
 
@@ -43,13 +84,11 @@ export class RegexMonitor {
 
     async refresh() {
         try {
-            const [statusRes, metricsRes] = await Promise.all([
-                fetch(this.appConfig.backendBaseUrl + '/api/v1/monitor/status'),
-                fetch(this.appConfig.backendBaseUrl + '/api/v1/monitor/metrics'),
-            ]);
+            const statusData = await http.get<StatusResponse>(MONITOR_STATUS_API);
+            const metricsData = await http.get<MetricsResponse>(MONITOR_METRICS_API);
 
-            this.status = await statusRes.json();
-            this.metrics = await metricsRes.json();
+            this.status = statusData;
+            this.metrics = metricsData;
         } catch (e) {
             console.error('Failed to fetch metrics:', e);
         } finally {
@@ -58,13 +97,21 @@ export class RegexMonitor {
     }
 
     async resetMetrics() {
-        await fetch(this.appConfig.backendBaseUrl + '/api/v1/monitor/metrics/reset', {method: 'POST'});
-        await this.refresh();
+        try {
+            await http.post<void>(MONITOR_METRICS_RESET_API);
+            await this.refresh();
+        } catch (e) {
+            console.error('Failed to reset metrics:', e);
+        }
     }
 
     async clearCache() {
-        await fetch(this.appConfig.backendBaseUrl + '/api/v1/monitor/cache', {method: 'DELETE'});
-        await this.refresh();
+        try {
+            await http.delete<void>(MONITOR_CACHE_API);
+            await this.refresh();
+        } catch (e) {
+            console.error('Failed to clear cache:', e);
+        }
     }
 
     formatBytes(bytes: number): string {
@@ -102,9 +149,9 @@ export class RegexMonitor {
             );
         }
 
-        const engine = this.metrics?.engine || {};
-        const jvm = this.metrics?.jvm || {};
-        const system = this.metrics?.system || {};
+        const engine = this.metrics?.engine || {} as EngineMetrics;
+        const jvm = this.metrics?.jvm || {} as JvmMetrics;
+        const system = this.metrics?.system || {} as SystemMetrics;
 
         return (
             <div class="monitor-container">
@@ -171,14 +218,14 @@ export class RegexMonitor {
                             <div class="metric-item">
                                 <span class="metric-label">Success Rate</span>
                                 <span class="metric-value">
-                  {engine.successRate ? `${(engine.successRate * 100).toFixed(1)}%` : 'N/A'}
-                </span>
+                                    {engine.successRate ? `${(engine.successRate * 100).toFixed(1)}%` : 'N/A'}
+                                </span>
                             </div>
                             <div class="metric-item">
                                 <span class="metric-label">Avg Match Time</span>
                                 <span class="metric-value">
-                  {engine.averageMatchTimeMs ? `${engine.averageMatchTimeMs.toFixed(2)}ms` : 'N/A'}
-                </span>
+                                    {engine.averageMatchTimeMs ? `${engine.averageMatchTimeMs.toFixed(2)}ms` : 'N/A'}
+                                </span>
                             </div>
                             <div class="metric-item">
                                 <span class="metric-label">Compilations</span>
