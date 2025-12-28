@@ -70,14 +70,15 @@ Then access the UI at `http://localhost:8080/` when running the Spring Boot app.
 
 ## Components
 
-| Component | Description |
-|-----------|-------------|
-| `<regex-app>` | Main application shell with navigation |
-| `<regex-matcher>` | Match/Find operations form and results |
-| `<regex-replace>` | Replace operation with before/after view |
-| `<regex-split>` | Split operation with parts display |
-| `<regex-benchmark>` | Engine comparison with timing bars |
-| `<regex-monitor>` | Health metrics dashboard |
+| Component           | Description                              |
+|---------------------|------------------------------------------|
+| `<regex-app>`       | Main application shell with navigation   |
+| `<regex-docs>`      | Documentation and Links                  |
+| `<regex-matcher>`   | Match/Find operations form and results   |
+| `<regex-replace>`   | Replace operation with before/after view |
+| `<regex-split>`     | Split operation with parts display       |
+| `<regex-benchmark>` | Engine comparison with timing bars       |
+| `<regex-monitor>`   | Health metrics dashboard                 |
 
 ## API Endpoints Used
 
