@@ -2,8 +2,7 @@ name: Deploy Frontend to GitHub Pages
 
 on:
   push:
-    branches: [ master ]
-    paths: [ "frontend/**" ]
+    branches: [master]
 
 permissions:
   contents: write
@@ -29,7 +28,7 @@ jobs:
           cd frontend
           npm ci
 
-      - name: Build for Production
+      - name: Build for production
         run: |
           cd frontend
           npm run build:prod
