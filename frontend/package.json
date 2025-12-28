@@ -7,7 +7,7 @@
   "types": "dist/types/index.d.ts",
   "collection": "dist/collection/collection-manifest.json",
   "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/regex-engine-ui/regex-engine-ui.esm.js",
+  "unpkg": "dist/regex-engine/regex-engine.esm.js",
   "scripts": {
     "build": "stencil build",
     "build:prod": "NODE_ENV=production stencil build",
