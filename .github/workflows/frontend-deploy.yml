@@ -3,6 +3,8 @@ name: Deploy Frontend to GitHub Pages
 on:
   push:
     branches: [master]
+    paths:
+      - "frontend/**"
 
 permissions:
   contents: write
@@ -35,8 +37,10 @@ jobs:
         env:
           NODE_ENV: production
 
-      - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./regex-engine/www
+          path: frontend/www
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
