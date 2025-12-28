@@ -5,7 +5,6 @@ import com.rickm.regex.engine.dto.MatchResult;
 import com.rickm.regex.engine.exception.BacktrackLimitExceededException;
 import com.rickm.regex.engine.parser.AstNode;
 import com.rickm.regex.engine.parser.BasicRegexParser;
-import com.rickm.regex.engine.parser.RegexParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;

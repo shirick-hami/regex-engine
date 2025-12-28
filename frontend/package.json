@@ -10,6 +10,8 @@
   "unpkg": "dist/regex-engine-ui/regex-engine-ui.esm.js",
   "scripts": {
     "build": "stencil build",
+    "build:prod": "NODE_ENV=production stencil build",
+    "build:prod:win": "cross-env NODE_ENV=production stencil build",
     "start": "stencil build --dev --watch --serve",
     "test": "stencil test --spec --e2e",
     "generate": "stencil generate"
@@ -18,7 +20,10 @@
     "@stencil/core": "^4.0.0"
   },
   "devDependencies": {
+    "@rollup/plugin-replace": "^6.0.3",
     "@types/node": "^20.0.0",
+    "cross-env": "^10.1.0",
+    "rollup-plugin-copy": "^3.5.0",
     "typescript": "^5.0.0"
   },
   "license": "MIT"

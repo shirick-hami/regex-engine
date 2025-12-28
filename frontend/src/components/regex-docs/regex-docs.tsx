@@ -1,5 +1,11 @@
 import {Component, h} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {
+    getDeveloper,
+    getGithubRepoCloneCommand,
+    getGithubUrl,
+    getRestDocsUrl,
+    getSwaggerUrl
+} from "../../utils/env.service";
 
 @Component({
     tag: 'regex-docs',
@@ -7,7 +13,6 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexDocs {
-    private appConfig = getAppConfig();
 
     private features = [
         {
@@ -91,7 +96,7 @@ export class RegexDocs {
                             REST API, and beautiful web interface.
                         </p>
                         <div class="hero-actions">
-                            <a href={`${this.appConfig.githubUrl}`} target="_blank"
+                            <a href={getGithubUrl()} target="_blank"
                                rel="noopener noreferrer" class="btn-primary">
                 <span class="btn-icon">
                   <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
@@ -101,7 +106,7 @@ export class RegexDocs {
                 </span>
                                 <span>View on GitHub</span>
                             </a>
-                            <a href={`${this.appConfig.backendBaseUrl}/swagger-ui.html`} target="_blank" class="btn-secondary">
+                            <a href={getSwaggerUrl()} target="_blank" class="btn-secondary">
                                 <span>API Docs</span>
                             </a>
                         </div>
@@ -221,7 +226,7 @@ export class RegexDocs {
                         <div class="quickstart-step">
                             <div class="step-number">1</div>
                             <h4>Clone Repository</h4>
-                            <code>{this.appConfig.gitCloneUrl}</code>
+                            <code>{getGithubRepoCloneCommand()}</code>
                         </div>
                         <div class="quickstart-step">
                             <div class="step-number">2</div>
@@ -242,7 +247,7 @@ export class RegexDocs {
                         <div class="license-info">
                             <h4>MIT License</h4>
                             <p>
-                                Copyright © 2025 {this.appConfig.creatorName}. Permission is hereby granted, free of charge,
+                                Copyright © 2025 {getDeveloper()}. Permission is hereby granted, free of charge,
                                 to any person obtaining a copy of this software and associated documentation files,
                                 to deal in the Software without restriction, including without limitation the rights
                                 to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
@@ -251,19 +256,19 @@ export class RegexDocs {
                         </div>
                         <div class="credits">
                             <p>
-                                Designed and developed with ❤️ by <strong>{this.appConfig.creatorName}</strong>
+                                Designed and developed with ❤️ by <strong>{getDeveloper()}</strong>
                             </p>
                             <div class="footer-links">
-                                <a href={`${this.appConfig.githubUrl}`} target="_blank"
+                                <a href={getGithubUrl()} target="_blank"
                                    rel="noopener noreferrer">
                                     GitHub
                                 </a>
                                 <span class="separator">•</span>
-                                <a href={`${this.appConfig.backendBaseUrl}/swagger-ui.html`} target="_blank">
+                                <a href={getSwaggerUrl()} target="_blank">
                                     API Documentation
                                 </a>
                                 <span class="separator">•</span>
-                                <a href={`${this.appConfig.backendBaseUrl}//api-docs`} target="_blank">
+                                <a href={getRestDocsUrl()} target="_blank">
                                     OpenAPI Spec
                                 </a>
                             </div>

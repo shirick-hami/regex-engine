@@ -1,5 +1,12 @@
 import {Component, h, State} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {getDeveloper, getGithubUrl} from "../../utils/env.service";
+import {http} from "../../services/http";
+import {MONITOR_STATUS_API} from "../../utils/constants";
+
+interface StatusResponse {
+    status: string;
+    error?: string;
+}
 
 @Component({
     tag: 'regex-app',
@@ -7,10 +14,8 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexApp {
-    private appConfig = getAppConfig();
-
     @State() activeTab: string = 'docs';
-    @State() status: any = null;
+    @State() status: StatusResponse | null = null;
 
     private tabs = [
         {id: 'docs', label: 'Documentation', icon: '📚'},
@@ -28,8 +33,7 @@ export class RegexApp {
 
     async checkStatus() {
         try {
-            const res = await fetch(this.appConfig.backendBaseUrl + '/api/v1/monitor/status');
-            this.status = await res.json();
+            this.status = await http.get<StatusResponse>(MONITOR_STATUS_API);
         } catch (e) {
             if (e instanceof Error) {
                 this.status = {status: 'DOWN', error: e.message};
@@ -77,12 +81,11 @@ export class RegexApp {
                 </main>
 
                 <footer class="app-footer">
-                    <span>MIT License © 2025 {this.appConfig.creatorName}</span>
+                    <span>MIT License © 2025 {getDeveloper()}</span>
                     <span class="separator">•</span>
                     <span>Backtracking | NFA | DFA</span>
                     <span class="separator">•</span>
-                    <a href={`${this.appConfig.githubUrl}`} target="_blank"
-                       rel="noopener noreferrer">GitHub</a>
+                    <a href={getGithubUrl()} target="_blank" rel="noopener noreferrer">GitHub</a>
                 </footer>
             </div>
         );

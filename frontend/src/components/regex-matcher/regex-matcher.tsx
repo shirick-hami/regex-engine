@@ -1,5 +1,20 @@
 import {Component, h, Prop, State} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {http} from "../../services/http";
+import {REGEX_MATCH_API, REGEX_FIND_API, REGEX_FIND_ALL_API} from "../../utils/constants";
+
+interface MatchResult {
+    matched: boolean;
+    engine: string;
+    startIndex?: number;
+    endIndex?: number;
+    matchTimeMs: number;
+    backtrackCount?: number;
+    allMatches?: Array<{
+        startIndex: number;
+        endIndex: number;
+        matchedText: string;
+    }>;
+}
 
 @Component({
     tag: 'regex-matcher',
@@ -7,15 +22,13 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexMatcher {
-    private appConfig = getAppConfig();
-
     @Prop() mode: 'match' | 'find' = 'match';
 
     @State() pattern: string = '';
     @State() input: string = '';
     @State() engine: string = 'BACKTRACKING';
     @State() findAll: boolean = false;
-    @State() result: any = null;
+    @State() result: MatchResult | null = null;
     @State() loading: boolean = false;
     @State() error: string = '';
 
@@ -31,26 +44,16 @@ export class RegexMatcher {
 
         try {
             const endpoint = this.mode === 'match'
-                ? '/api/v1/regex/match'
+                ? REGEX_MATCH_API
                 : this.findAll
-                    ? '/api/v1/regex/find-all'
-                    : '/api/v1/regex/find';
+                    ? REGEX_FIND_ALL_API
+                    : REGEX_FIND_API;
 
-            const baseUrl = this.appConfig.backendBaseUrl;
-
-            const res = await fetch(`${baseUrl}${endpoint}?engine=${this.engine}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({pattern: this.pattern, input: this.input}),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.error = data.message || 'An error occurred';
-            } else {
-                this.result = data;
-            }
+            this.result = await http.post<MatchResult>(
+                endpoint,
+                {pattern: this.pattern, input: this.input},
+                {engine: this.engine}
+            );
         } catch (e) {
             if (e instanceof Error) {
                 this.error = e.message;
@@ -66,22 +69,22 @@ export class RegexMatcher {
         if (!this.result?.matched) return this.input;
 
         const matches = this.result.allMatches || [
-            {startIndex: this.result.startIndex, endIndex: this.result.endIndex}
+            {startIndex: this.result.startIndex!, endIndex: this.result.endIndex!, matchedText: ''}
         ];
 
         if (matches.length === 0) return this.input;
 
-        const parts = [];
+        const parts: any[] = [];
         let lastEnd = 0;
 
-        matches.forEach((match: any, i: number) => {
+        matches.forEach((match, i: number) => {
             if (match.startIndex > lastEnd) {
                 parts.push(<span class="text-normal">{this.input.slice(lastEnd, match.startIndex)}</span>);
             }
             parts.push(
                 <span class="text-match" key={i}>
-          {this.input.slice(match.startIndex, match.endIndex)}
-        </span>
+                    {this.input.slice(match.startIndex, match.endIndex)}
+                </span>
             );
             lastEnd = match.endIndex;
         });
@@ -212,7 +215,7 @@ export class RegexMatcher {
                                     <div class="matches-list">
                                         <h4>Matches ({this.result.allMatches.length})</h4>
                                         <div class="matches-grid">
-                                            {this.result.allMatches.map((m: any, i: number) => (
+                                            {this.result.allMatches.map((m, i: number) => (
                                                 <div class="match-item" key={i}>
                                                     <span class="match-index">#{i + 1}</span>
                                                     <span class="match-text mono">"{m.matchedText}"</span>

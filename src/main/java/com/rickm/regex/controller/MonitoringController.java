@@ -1,6 +1,5 @@
 package com.rickm.regex.controller;
 
-import com.rickm.regex.dto.RegexRequest;
 import com.rickm.regex.service.RegexService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -121,21 +120,5 @@ public class MonitoringController {
     public ResponseEntity<Map<String, String>> clearCache() {
         regexService.clearCache();
         return ResponseEntity.ok(Map.of("message", "Cache cleared successfully"));
-    }
-
-    /**
-     * Runs a performance benchmark.
-     */
-    @PostMapping("/benchmark")
-    @Operation(summary = "Run benchmark", description = "Benchmarks all three engines on a pattern")
-    public ResponseEntity<Map<String, Object>> benchmark(
-            @RequestBody RegexRequest.MatchRequest request) {
-
-        Map<String, Object> results = regexService.benchmark(
-                request.getPattern(),
-                request.getInput()
-        );
-
-        return ResponseEntity.ok(results);
     }
 }

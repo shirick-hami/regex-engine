@@ -1,5 +1,11 @@
 import {Component, h, State} from '@stencil/core';
-import {getAppConfig} from "../../config/config";
+import {http} from "../../services/http";
+import {REGEX_SPLIT_API} from "../../utils/constants";
+
+interface SplitResult {
+    parts: string[];
+    partCount: number;
+}
 
 @Component({
     tag: 'regex-split',
@@ -7,12 +13,10 @@ import {getAppConfig} from "../../config/config";
     shadow: true,
 })
 export class RegexSplit {
-    private appConfig = getAppConfig();
-
     @State() pattern: string = '';
     @State() input: string = '';
     @State() engine: string = 'BACKTRACKING';
-    @State() result: any = null;
+    @State() result: SplitResult | null = null;
     @State() loading: boolean = false;
     @State() error: string = '';
 
@@ -27,20 +31,11 @@ export class RegexSplit {
         this.result = null;
 
         try {
-            const baseUrl = this.appConfig.backendBaseUrl;
-            const res = await fetch(`${baseUrl}/api/v1/regex/split?engine=${this.engine}`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({pattern: this.pattern, input: this.input}),
-            });
-
-            const data = await res.json();
-
-            if (!res.ok) {
-                this.error = data.message || 'An error occurred';
-            } else {
-                this.result = data;
-            }
+            this.result = await http.post<SplitResult>(
+                REGEX_SPLIT_API,
+                {pattern: this.pattern, input: this.input},
+                {engine: this.engine}
+            );
         } catch (e) {
             if (e instanceof Error) {
                 this.error = e.message;
@@ -135,7 +130,7 @@ export class RegexSplit {
 
                         <div class="parts-list">
                             <div class="parts-grid">
-                                {this.result.parts.map((part: any, i: number) => (
+                                {this.result.parts.map((part: string, i: number) => (
                                     <div class="part-item" key={i}>
                                         <span class="part-index">#{i}</span>
                                         <span class="part-text">"{part}"</span>
