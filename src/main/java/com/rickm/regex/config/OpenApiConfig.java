@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Configuration
 public class OpenApiConfig {
-
+    
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
@@ -42,13 +42,6 @@ public class OpenApiConfig {
                                 | `\\x` | Escape character x |
                                 | `.` | Any printable character (except newline) |
                                 | `(expr)` | Grouping |
-                                
-                                ## Operator Precedence (descending)
-                                1. Grouping `()`
-                                2. Literals and character classes
-                                3. Quantifiers `* + ?`
-                                4. Concatenation
-                                5. Alternation `|`
                                 """)
                         .contact(new Contact()
                                 .name("API Support")
