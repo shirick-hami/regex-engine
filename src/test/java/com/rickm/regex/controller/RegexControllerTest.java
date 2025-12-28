@@ -318,9 +318,9 @@ class RegexControllerTest {
         @Test
         @DisplayName("Get cache stats")
         void testGetCacheStats() throws Exception {
-            mockMvc.perform(get("/api/v1/regex/cache/stats"))
+            mockMvc.perform(get("/api/v1/monitor/cache"))
                     .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.cacheSize").exists());
+                    .andExpect(jsonPath("$.size").exists());
         }
         
         @Test
@@ -337,8 +337,8 @@ class RegexControllerTest {
                     .andExpect(status().isOk());
             
             // Clear cache
-            mockMvc.perform(delete("/api/v1/regex/cache"))
-                    .andExpect(status().isNoContent());
+            mockMvc.perform(delete("/api/v1/monitor/cache"))
+                    .andExpect(status().isOk());
         }
     }
     
