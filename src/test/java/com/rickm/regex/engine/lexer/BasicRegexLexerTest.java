@@ -10,9 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * Tests for the RegexLexer (Tokenizer).
+ * Tests for the BasicRegexLexer (Tokenizer).
  */
-@DisplayName("RegexLexer Tests")
+@DisplayName("BasicRegexLexer Tests")
 class BasicRegexLexerTest {
     
     @Nested
