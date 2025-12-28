@@ -1,5 +1,5 @@
 {
-  "name": "regex-engine-ui",
+  "name": "regex-engine",
   "version": "1.0.0",
   "description": "Beautiful UI for Regex Engine API",
   "main": "dist/index.cjs.js",
