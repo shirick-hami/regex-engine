@@ -125,31 +125,31 @@ This means:
 ## Architecture
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                         REST API Layer                          │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │  RegexController  │  GlobalExceptionHandler              │  │
-│  └──────────────────────────────────────────────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                        Service Layer                            │
-│  ┌──────────────────────────────────────────────────────────┐  │
-│  │                    RegexService                          │  │
-│  │  - Pattern compilation and caching                       │  │
-│  │  - Match orchestration                                   │  │
-│  │  - Replace/Split operations                              │  │
-│  └──────────────────────────────────────────────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                         Core Engine                             │
+┌───────────────────────────────────────────────────────────────┐
+│                         REST API Layer                        │
+│  ┌──────────────────────────────────────────────────────────┐ │
+│  │  RegexController  │  GlobalExceptionHandler              │ │
+│  └──────────────────────────────────────────────────────────┘ │
+├───────────────────────────────────────────────────────────────┤
+│                        Service Layer                          │
+│  ┌──────────────────────────────────────────────────────────┐ │
+│  │                    RegexService                          │ │
+│  │  - Pattern compilation and caching                       │ │
+│  │  - Match orchestration                                   │ │
+│  │  - Replace/Split operations                              │ │
+│  └──────────────────────────────────────────────────────────┘ │
+├───────────────────────────────────────────────────────────────┤
+│                         Core Engine                           │
 │  ┌────────────────┐  ┌────────────────┐  ┌─────────────────┐  │
-│  │   RegexLexer   │→│  RegexParser   │→│BacktrackingMatcher│  │
+│  │   RegexLexer   │→ │  RegexParser   │→ │  RegexMatcher   │  │
 │  │   (Tokenizer)  │  │ (AST Builder)  │  │   (Matching)    │  │
 │  └────────────────┘  └────────────────┘  └─────────────────┘  │
-├─────────────────────────────────────────────────────────────────┤
-│                        Model Layer                              │
+├───────────────────────────────────────────────────────────────┤
+│                        Model Layer                            │
 │  ┌──────────┐  ┌─────────────────┐  ┌──────────────────────┐  │
 │  │ AstNode  │  │ CompiledPattern │  │    MatchResult       │  │
 │  └──────────┘  └─────────────────┘  └──────────────────────┘  │
-└─────────────────────────────────────────────────────────────────┘
+└───────────────────────────────────────────────────────────────┘
 ```
 
 ### Component Overview
@@ -184,13 +184,13 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-The application starts on `http://localhost:8080`.
+The application starts on `http://localhost:8080/api/v1/re`.
 
 ### Quick Test
 
 ```bash
 # Test a simple pattern
-curl -X GET "http://localhost:8080/api/v1/regex/test?pattern=[a-z]+&input=hello&type=full"
+curl -X GET "http://localhost:8080/api/v1/re/regex/test?pattern=[a-z]+&input=hello&type=full"
 
 # Expected response:
 {
@@ -207,13 +207,13 @@ curl -X GET "http://localhost:8080/api/v1/regex/test?pattern=[a-z]+&input=hello&
 
 ## API Reference
 
-Base URL: `http://localhost:8080/api/v1/regex`
+Base URL: `http://localhost:8080/api/v1/re/regex`
 
 ### Swagger UI
 
 Access the interactive API documentation at:
-- Swagger UI: `http://localhost:8080/swagger-ui.html`
-- OpenAPI JSON: `http://localhost:8080/api-docs`
+- Swagger UI: `http://localhost:8080/api/v1/re/swagger-ui.html`
+- OpenAPI JSON: `http://localhost:8080/api/v1/re/api-docs`
 
 ### Endpoints
 
@@ -389,7 +389,7 @@ Clears the pattern cache.
 ### Validating Email-like Patterns
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/regex/match \
+curl -X POST http://localhost:8080/api/v1/re/regex/match \
   -H "Content-Type: application/json" \
   -d '{
     "pattern": "[a-z]+@[a-z]+\\.[a-z]+",
@@ -400,7 +400,7 @@ curl -X POST http://localhost:8080/api/v1/regex/match \
 ### Extracting Numbers
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/regex/find-all \
+curl -X POST http://localhost:8080/api/v1/re/regex/find-all \
   -H "Content-Type: application/json" \
   -d '{
     "pattern": "[0-9]+",
@@ -411,7 +411,7 @@ curl -X POST http://localhost:8080/api/v1/regex/find-all \
 ### Identifier Validation
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/regex/match \
+curl -X POST http://localhost:8080/api/v1/re/regex/match \
   -H "Content-Type: application/json" \
   -d '{
     "pattern": "[a-zA-Z_][a-zA-Z0-9_]*",
@@ -422,7 +422,7 @@ curl -X POST http://localhost:8080/api/v1/regex/match \
 ### Splitting CSV
 
 ```bash
-curl -X POST http://localhost:8080/api/v1/regex/split \
+curl -X POST http://localhost:8080/api/v1/re/regex/split \
   -H "Content-Type: application/json" \
   -d '{
     "pattern": ",",

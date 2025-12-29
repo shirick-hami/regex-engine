@@ -82,14 +82,14 @@ Then access the UI at `http://localhost:8080/` when running the Spring Boot app.
 
 ## API Endpoints Used
 
-- `POST /api/v1/regex/match` - Full match
-- `POST /api/v1/regex/find` - Find first
-- `POST /api/v1/regex/find-all` - Find all
-- `POST /api/v1/regex/replace` - Replace all
-- `POST /api/v1/regex/split` - Split by pattern
-- `POST /api/v1/regex/benchmark` - Engine benchmark
-- `GET /api/v1/monitor/status` - Health status
-- `GET /api/v1/monitor/metrics` - Detailed metrics
+- `POST /regex/match` - Full match
+- `POST /regex/find` - Find first
+- `POST /regex/find-all` - Find all
+- `POST /regex/replace` - Replace all
+- `POST /regex/split` - Split by pattern
+- `POST /regex/benchmark` - Engine benchmark
+- `GET /monitor/status` - Health status
+- `GET /monitor/metrics` - Detailed metrics
 
 ## Browser Support
 
