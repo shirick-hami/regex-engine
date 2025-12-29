@@ -66,7 +66,7 @@ Copy the built files to Spring Boot's static resources:
 cp -r www/* ../src/main/resources/static/
 ```
 
-Then access the UI at `http://localhost:8080/` when running the Spring Boot app.
+Then access the UI at `http://localhost:8080/api/v1/re` when running the Spring Boot app.
 
 ## Components
 

@@ -174,7 +174,7 @@ This means:
 
 ```bash
 # Clone the repository
-git clone <repository-url>
+git clone git@github.com:shirick-hami/regex-engine.git
 cd regex-engine
 
 # Build with Maven
