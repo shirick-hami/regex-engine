@@ -17,7 +17,7 @@ import java.util.Map;
  * Controller for health monitoring and metrics endpoints.
  */
 @RestController
-@RequestMapping("/api/v1/monitor")
+@RequestMapping("/monitor")
 @RequiredArgsConstructor
 @Tag(name = "Monitoring", description = "Health monitoring and metrics")
 public class MonitoringController {

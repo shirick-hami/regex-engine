@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
  * - DFA: Deterministic finite automaton
  */
 @RestController
-@RequestMapping("/api/v1/regex")
+@RequestMapping("/regex")
 @RequiredArgsConstructor
 @Slf4j
 @Tag(name = "Regex Operations", description = "Regular expression matching and manipulation")
