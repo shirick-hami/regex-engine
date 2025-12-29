@@ -76,7 +76,7 @@ export class RegexDocs {
     ];
 
     private techStack = [
-        {name: 'Spring Boot 4.0', icon: '🍃'},
+        {name: 'Spring Boot 3.2', icon: '🍃'},
         {name: 'Java 21', icon: '☕'},
         {name: 'Stencil.js', icon: '⚡'},
         {name: 'TypeScript', icon: '📘'},
