@@ -38,19 +38,17 @@ public class OpenApiConfig {
                                 | `*` | Zero or more (greedy) |
                                 | `+` | One or more (greedy) |
                                 | `?` | Zero or one (greedy) |
-                                | `\\|` | Alternation (OR) |
+                                | `Pipe Operator` | Alternation (OR) |
                                 | `\\x` | Escape character x |
                                 | `.` | Any printable character (except newline) |
                                 | `(expr)` | Grouping |
                                 """)
                         .contact(new Contact()
                                 .name("API Support")
-                                .email("support@example.com"))
+                                .email("saptarickmishra@gmail.com"))
                         .license(new License()
                                 .name("MIT License")
-                                .url("https://opensource.org/licenses/MIT")))
-                .servers(List.of(
-                        new Server().url("http://localhost:8080").description("Local development server")
-                ));
+                                .url("https://opensource.org/licenses/MIT"))
+                );
     }
 }
