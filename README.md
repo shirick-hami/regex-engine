@@ -207,7 +207,7 @@ curl -X GET "http://localhost:8080/api/v1/re/regex/test?pattern=[a-z]+&input=hel
 
 ## API Reference
 
-Base URL: `http://localhost:8080/api/v1/re/regex`
+Base URL: `http://localhost:8080/api/v1/re`
 
 ### Swagger UI
 
