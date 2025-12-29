@@ -119,7 +119,7 @@ export class RegexDocs {
                                 <span class="dot green"></span>
                             </div>
                             <pre class="code-body"><code><span
-                                class="keyword">POST</span> /api/v1/regex/match?engine=<span class="string">NFA</span>
+                                class="keyword">POST</span> /api/v1/re/regex/match?engine=<span class="string">NFA</span>
                                 {'{'}
                                 <span class="key">"pattern"</span>: <span class="string">"[a-z]+@[a-z]+\\.com"</span>,
   <span class="key">"input"</span>: <span class="string">"hello@world.com"</span>
