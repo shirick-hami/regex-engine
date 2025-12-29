@@ -1,4 +1,4 @@
-const API_URL = 'https://your-backend-server.com';
+const API_URL = 'https://your-backend-server.com/api/v1/re';
 
 export const environment = {
     production: true,
