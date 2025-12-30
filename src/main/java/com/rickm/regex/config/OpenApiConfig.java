@@ -23,7 +23,7 @@ public class OpenApiConfig {
                         .title("Regex Engine API")
                         .version("1.0.0")
                         .description("""
-                                Production-grade Regular Expression Engine with Backtracking Algorithm.
+                                Regular Expression Engine with Backtracking Algorithm.
                                 
                                 ## Supported Regex Constructs
                                 
