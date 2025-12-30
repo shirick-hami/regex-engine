@@ -1,5 +1,6 @@
 package com.rickm.regex.config;
 
+import com.rickm.regex.properties.CorsProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

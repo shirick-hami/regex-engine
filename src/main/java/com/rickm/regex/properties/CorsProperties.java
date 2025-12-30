@@ -1,4 +1,4 @@
-package com.rickm.regex.config;
+package com.rickm.regex.properties;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

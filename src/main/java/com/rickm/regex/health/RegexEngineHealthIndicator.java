@@ -1,5 +1,6 @@
-package com.rickm.regex.config;
+package com.rickm.regex.health;
 
+import com.rickm.regex.config.RegexEngineConfig;
 import com.rickm.regex.service.RegexService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.health.Health;
